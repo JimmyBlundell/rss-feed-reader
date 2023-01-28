@@ -47,6 +47,12 @@ button:hover {
     border: 1px solid  #7ce2ff;
 }
 
+button:disabled {
+    background-color: #9e9e9e;
+    color: black;
+    border: 1px solid #9e9e9e;
+}
+
 /* form-input.css */
 
 .group {

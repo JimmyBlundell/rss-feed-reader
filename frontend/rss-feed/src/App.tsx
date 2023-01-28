@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { ReactComponent as Logo } from "./logo.svg";
-import { getData } from "./utils/data-utils";
 import FormInput from './components/form-input/form-input';
+import Axios from "axios";
 
 import './App.css';
 
@@ -14,49 +14,51 @@ type User = {
 
 const App = () => {
     const [user, setUser] = useState<User | null>();
-    const [emailReg, setEmailReg] = useState('');
+    const [usernameReg, setUsernameReg] = useState('');
     const [passwordReg, setPasswordReg] = useState('');
-    const [ email, setEmail ] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [loginStatus, setLoginStatus] = useState('');
 
-
-    const handleLoginSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-
-        try {
-            const res:User = await getData(
-                'http://localhost:8000/login', email, password
-            )
-            setUser(res);
-            // resetLoginFields()
-        } catch (error) {
-            alert('User Sign In Failed');
-        }
-    };
-
-    const handleRegisterSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-
-        try {
-            const res:User = await getData(
-                'http://localhost:8000/login', emailReg, passwordReg
-            )
-            setUser(res);
-            // resetRegisterFields()
-        } catch (error) {
-            alert('User Register Failed');
-        }
-    };
+    // disable register / login button until fields are filled out appropriately
+    const fieldsValidation = (un: string, pw: string) => {
+        return un.length > 0 && pw.length > 0;
+    }
 
     const resetRegistration = () => {
-        setEmailReg('');
+        setUsernameReg('');
         setPasswordReg('');
     }
     const resetLogin = () => {
-        setEmail('');
+        setUsername('');
         setPassword('');
     }
 
+    const register = () => {
+        Axios.post('http://localhost:8000/register', {
+            username: usernameReg,
+            password: passwordReg,
+        }).then((response) => {
+            console.log(JSON.stringify(response));
+        });
+    };
+
+    const login = () => {
+        Axios.post('http://localhost:8000/login', {
+            username: username,
+            password: password,
+        }).then((response) => {
+            if (response?.data?.message) {
+                setLoginStatus(response.data.message);
+            }
+            else {
+                setLoginStatus(response.data[0].username);
+            }
+        });
+    };
+    /**
+     * TODO: Add form components back in possibly, for a page refresh / re route?
+     */
     return (
         <div className='App-header'>
             <h1>
@@ -65,17 +67,16 @@ const App = () => {
             <div className="card">
                 <Logo className="logo" />
                 <h2>Register</h2>
-                <form onSubmit={handleRegisterSubmit} id={"registerForm"}>
                     <FormInput
-                        label="Email"
-                        type="email"
+                        label="Username"
+                        type="text"
                         required
-                        name="email"
-                        value={emailReg}
+                        name="text"
+                        value={usernameReg}
                         onChange={(e) => {
-                            setEmailReg(e.target.value);
+                            setUsernameReg(e.target.value);
                         }}
-                        id={"registerEmail"}
+                        id={"registerUsername"}
                     />
                     <FormInput
                         label="Password"
@@ -89,12 +90,17 @@ const App = () => {
                         id={"registerPassword"}
                     />
                     <div className="button-group">
-                        <button type="submit">Register</button>
+                        <button
+                            type="submit"
+                            onClick={register}
+                            disabled={!fieldsValidation(usernameReg, passwordReg)}
+                        >
+                            Register
+                        </button>
                         <span>
-                <button type="button" onClick={resetRegistration}>Clear</button>
-              </span>
+                            <button type="button" onClick={resetRegistration}>Clear</button>
+                        </span>
                     </div>
-                </form>
             </div>
             <br/>
             <h4> OR </h4>
@@ -102,17 +108,16 @@ const App = () => {
             <div className="card">
                 <Logo className="logo" />
                 <h2>Sign In</h2>
-                <form onSubmit={handleLoginSubmit} id={"signInForm"}>
                     <FormInput
-                        label="Email"
-                        type="email"
+                        label="Username"
+                        type="text"
                         required
-                        name="email"
-                        value={email}
+                        name="text"
+                        value={username}
                         onChange={(e) => {
-                            setEmail(e.target.value);
+                            setUsername(e.target.value);
                         }}
-                        id={"signInEmail"}
+                        id={"signInUsername"}
                     />
                     <FormInput
                         label="Password"
@@ -126,13 +131,19 @@ const App = () => {
                         id={"signInPassword"}
                     />
                     <div className="button-group">
-                        <button type="submit">Sign In</button>
+                        <button
+                            type="submit"
+                            onClick={login}
+                            disabled={!fieldsValidation(username, password)}
+                        >
+                            Sign In
+                        </button>
                         <span>
-                <button type="button" onClick={resetLogin}>Clear</button>
-              </span>
+                            <button type="button" onClick={resetLogin}>Clear</button>
+                        </span>
                     </div>
-                </form>
             </div>
+            <h1>{loginStatus}</h1>
         </div>
     );
 }
