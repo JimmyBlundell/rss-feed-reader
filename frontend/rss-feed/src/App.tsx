@@ -39,7 +39,7 @@ const App = () => {
             username: usernameReg,
             password: passwordReg,
         }).then((response) => {
-            console.log(JSON.stringify(response));
+            setLoginStatus(response?.data?.message ?? response?.data ?? "Something unknown occurred - uh oh.");
         });
     };
 
@@ -52,7 +52,7 @@ const App = () => {
                 setLoginStatus(response.data.message);
             }
             else {
-                setLoginStatus(response.data[0].username);
+                setLoginStatus(`Logged in as ${response.data[0].username}`);
             }
         });
     };

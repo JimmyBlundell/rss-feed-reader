@@ -20,12 +20,16 @@ const db = mysql_1.default.createConnection({
 app.post('/register', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    db.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password], (err, result) => {
-        if (err) {
-            res.send({ err: err });
-        }
-        if (result.length > 0) {
-            res.send(result);
+    // See if username already exists
+    db.query("SELECT username FROM users WHERE username = ?", [username], (err, result) => {
+        // username is not taken
+        if (result.length === 0) {
+            db.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password], (err, result) => {
+                if (err) {
+                    res.send({ err: err });
+                }
+                res.status(200).send("Successfully registered " + username + "!");
+            });
         }
         else {
             res.send({ message: "Username already exists!" });
