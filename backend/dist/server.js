@@ -50,7 +50,6 @@ app.post('/register', (req, res) => {
                 }
                 db.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], (err, result) => {
                     res.status(200).send("Successfully registered " + username + "!");
-                    console.log("Result: ", result);
                 });
             });
         }
@@ -60,7 +59,6 @@ app.post('/register', (req, res) => {
     });
 });
 app.get("/login", (req, res) => {
-    console.log("req.session: ", req.session);
     if (req.session.user) {
         // if our session already has a user, send true to the frontend
         // frontend runs this get login on first render, so will have user data if cookie has not expired.

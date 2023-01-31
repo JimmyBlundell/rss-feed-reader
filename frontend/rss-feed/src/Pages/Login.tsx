@@ -64,7 +64,9 @@ const Login = () => {
     // run on first render to see if user session is still active - remove console log later
     useEffect(() => {
         Axios.get("http://localhost:8000/login").then((response) => {
-            setLoginStatus(`Logged in as ${response.data.user}`);
+            if (response.data.loggedIn === true) {
+                setLoginStatus(`Logged in as ${response.data.user}`);
+            }
         })
     }, [])
 
