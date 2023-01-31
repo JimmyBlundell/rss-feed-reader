@@ -1,23 +1,26 @@
 .App-header {
-    background-color: #282c34;
+    background-color: #282c34 !important;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
     font-size: calc(5px + 2vmin);
-    color: white;
+    color: lightgray;
+    max-height: 100%;
 }
 
 .card {
-    border: solid 1px #6b6b6b;
+    border: solid 1px #6b6b6b !important;
+    background-color: #282c34 !important;
     border-radius: 5px;
     padding: 2rem;
 }
 
 .button-group {
-    margin-top: 20px;
-    margin-left: 30px;
+    display: flex !important;
+    justify-content: end !important;
+    align-content: center !important;
 }
 
 .logo {
@@ -28,30 +31,31 @@ h2 {
     margin-top: 2rem;
 }
 
-button {
-    margin-right: 10px;
-    border: 1px solid #46c6ea;
-    border-radius: 5px;
-    background: #46c6ea;
-    color: black;
-    padding: 5px;
-    padding-right: 14px;
-    padding-left: 12px;
-    font-size: 17px;
-    font-weight: bold;
-}
+/*Button {*/
+/*    margin-right: 10px !important;*/
+/*    max-height: 40px !important;*/
+/*    border: 1px solid #46c6ea;*/
+/*    border-radius: 5px;*/
+/*    background: #46c6ea;*/
+/*    color: black;*/
+/*    padding: 5px;*/
+/*    padding-right: 14px;*/
+/*    padding-left: 12px;*/
+/*    font-size: 17px;*/
+/*    font-weight: bold;*/
+/*}*/
 
-button:hover {
-    background-color: #7ce2ff;
-    color: black;
-    border: 1px solid  #7ce2ff;
-}
+/*Button:hover {*/
+/*    background-color: #7ce2ff;*/
+/*    color: black;*/
+/*    border: 1px solid  #7ce2ff;*/
+/*}*/
 
-button:disabled {
-    background-color: #9e9e9e;
-    color: black;
-    border: 1px solid #9e9e9e;
-}
+/*Button:disabled {*/
+/*    background-color: #9e9e9e;*/
+/*    color: black;*/
+/*    border: 1px solid #9e9e9e;*/
+/*}*/
 
 /* form-input.css */
 

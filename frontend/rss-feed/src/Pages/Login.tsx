@@ -1,6 +1,6 @@
 import React, {useState, ChangeEvent, FormEvent} from "react";
 import FormInput from '../components/form-input/form-input';
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
+import {Button} from "react-bootstrap";
 import Axios from "axios";
 
 import './Login.css';
@@ -19,6 +19,9 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loginStatus, setLoginStatus] = useState('');
+
+    // dictate whether register or login form is displayed
+    const [needsRegister, setNeedsRegister] = useState(true);
 
     // disable register / login button until fields are filled out appropriately
     const fieldsValidation = (un: string, pw: string) => {
@@ -60,56 +63,55 @@ const Login = () => {
      */
     return (
         <div className='App-header'>
-            <h1>
-                {user && `Welcome! ${user.username}`}
-            </h1>
-
-            <div className="card">
-                <h2>Register</h2>
-                <form autoComplete={"on"}>
-                    <FormInput
-                        label="Username"
-                        type="text"
-                        required
-                        name="text"
-                        value={usernameReg}
-                        onChange={(e) => {
-                            setUsernameReg(e.target.value);
-                        }}
-                        id={"registerUsername"}
-                    />
-                    <FormInput
-                        label="Password"
-                        type='password'
-                        required
-                        name='password'
-                        value={passwordReg}
-                        onChange={(e) => {
-                            setPasswordReg(e.target.value);
-                        }}
-                        id={"registerPassword"}
-                    />
-                    <div className="button-group">
-                        <button
-                            type="submit"
-                            onClick={register}
-                            disabled={!fieldsValidation(usernameReg, passwordReg)}
-                        >
-                            Register
-                        </button>
-                        <span>
-                                <button type="button" onClick={resetRegistration}>Clear</button>
-                            </span>
+            {needsRegister ?
+                <>
+                    <div className="card">
+                        <h2>Register</h2>
+                        <FormInput
+                            label="Username"
+                            type="text"
+                            required
+                            name="text"
+                            value={usernameReg}
+                            onChange={(e) => {
+                                setUsernameReg(e.target.value);
+                            }}
+                            id={"registerUsername"}/>
+                        <FormInput
+                            label="Password"
+                            type='password'
+                            required
+                            name='password'
+                            value={passwordReg}
+                            onChange={(e) => {
+                                setPasswordReg(e.target.value);
+                            }}
+                            id={"registerPassword"}/>
+                        <div className={"button-group"}>
+                            <Button
+                                type="submit"
+                                onClick={register}
+                                disabled={!fieldsValidation(usernameReg, passwordReg)}
+                                size={"lg"}
+                            >
+                                Register
+                            </Button>
+                            &nbsp;
+                            <Button type="button" onClick={resetRegistration} size={"lg"}>Clear</Button>
+                        </div>
                     </div>
-                </form>
-            </div>
-
-            <br/>
-            <h4> OR </h4>
-            <br/>
-            <div className="card">
-                <h2>Sign In</h2>
-                <form autoComplete={"on"}>
+                    <br/>
+                    <span>
+                        Already have an account?{' '}
+                        <Button
+                            variant="outline-primary" size={"sm"}
+                            onClick={() => setNeedsRegister(false)}>Log In
+                        </Button>
+                    </span>
+                </>
+                :
+                <div className="card">
+                    <h2>Sign In</h2>
                     <FormInput
                         label="Username"
                         type="text"
@@ -132,20 +134,20 @@ const Login = () => {
                         }}
                         id={"signInPassword"}
                     />
-                    <div className="button-group">
-                        <button
+                    <div className={"button-group"}>
+                        <Button
                             type="submit"
                             onClick={login}
                             disabled={!fieldsValidation(username, password)}
+                            size={"lg"}
                         >
                             Sign In
-                        </button>
-                        <span>
-                            <button type="button" onClick={resetLogin}>Clear</button>
-                        </span>
+                        </Button>
+                        &nbsp;
+                        <Button type="button" onClick={resetLogin} size={"lg"}>Clear</Button>
                     </div>
-                </form>
-            </div>
+                </div>
+            }
             <h1>{loginStatus}</h1>
         </div>
     );
