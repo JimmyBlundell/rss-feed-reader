@@ -14,7 +14,7 @@ const App = () => {
                 <Nav>
                     <Nav.Link href={"/"}>Home</Nav.Link>
                 </Nav>
-                <Nav className={"ms-auto"}>
+                <Nav>
                     <Nav.Link href={"/login"}>Log Out</Nav.Link>
                 </Nav>
             </Navbar>

@@ -49,20 +49,21 @@ app.post('/login', (req, res) => {
     const password = req.body.password;
     db.query("SELECT * FROM users WHERE username = ?", [username], (err, result) => {
         if (err) {
-            console.log("sending error");
-            res.send({ err: err });
+            throw err;
         }
         if (result.length > 0) {
             const pw = JSON.parse(JSON.stringify(result));
             bcrypt_1.default.compare(password, pw[0].password, (error, response) => {
                 if (response) {
-                    console.log("response: ", response);
                     res.send(result);
                 }
                 else {
-                    res.send({ message: "User does not exist!" });
+                    res.send({ message: "Username and/or password is incorrect !" });
                 }
             });
+        }
+        else {
+            res.send({ message: "Username and/or password is incorrect !" });
         }
     });
 });

@@ -1,26 +1,26 @@
 .App-header {
-    background-color: #282c34 !important;
+    background-color: #282c34;
     min-height: 100vh;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     font-size: calc(5px + 2vmin);
     color: lightgray;
     max-height: 100%;
 }
 
 .card {
-    border: solid 1px #6b6b6b !important;
-    background-color: #282c34 !important;
+    border: solid 1px #6b6b6b;
+    background-color: #282c34;
     border-radius: 5px;
     padding: 2rem;
 }
 
 .button-group {
-    display: flex !important;
-    justify-content: end !important;
-    align-content: center !important;
+    display: flex;
+    justify-content: end;
+    align-content: center;
 }
 
 .logo {

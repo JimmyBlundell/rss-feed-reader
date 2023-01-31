@@ -54,7 +54,7 @@ app.post('/login', (req, res) => {
     const password: string = req.body.password;
     db.query("SELECT * FROM users WHERE username = ?", [username], (err, result) => {
         if (err) {
-            res.send({err: err});
+            throw err;
         }
         if (result.length > 0) {
             const pw = JSON.parse(JSON.stringify(result));
@@ -63,9 +63,12 @@ app.post('/login', (req, res) => {
                     res.send(result);
                 }
                 else {
-                    res.send({message: "User does not exist!"});
+                    res.send({message: "Username and/or password is incorrect !"});
                 }
             })
+        }
+        else {
+            res.send({message: "Username and/or password is incorrect !"});
         }
     })
 });
