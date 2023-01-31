@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import express, { Express, Request, Response } from "express";
+import express, {Express, Request, Response} from "express";
 import mysql from "mysql";
 import cors from "cors";
 
@@ -29,7 +29,7 @@ app.post('/register', (req, res) => {
                 if (err) {
                     res.send({err: err});
                 }
-                    res.status(200).send("Successfully registered " + username + "!");
+                res.status(200).send("Successfully registered " + username + "!");
             });
         } else {
             res.send({message: "Username already exists!"});
