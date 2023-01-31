@@ -2,18 +2,32 @@ import dotenv from "dotenv";
 import express, {Express, Request, Response} from "express";
 import mysql from "mysql";
 import cors from "cors";
-import bcrypt, {hash} from 'bcrypt';
-
-const saltRounds = 10;
+import bcrypt from 'bcrypt';
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import session from "express-session";
 
 dotenv.config();
 
 const app: Express = express();
-
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true
+}));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({extended: true}));
 
-
+app.use(session({
+    secret: "rssfeedreadersecret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        // persist user for 2 weeks
+        expires:  new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
+    }
+}));
 
 const db = mysql.createConnection({
     user: "root",
@@ -21,6 +35,8 @@ const db = mysql.createConnection({
     password: "password",
     database: "rss-feed-db"
 });
+
+const saltRounds = 10;
 
 app.post('/register', (req, res) => {
     const username: string = req.body.username;
@@ -35,11 +51,7 @@ app.post('/register', (req, res) => {
                     console.log(err);
                 }
                 db.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], (err, result) => {
-                    // if (err) {
-                    //     res.send({err: err});
-                    // }
                     res.status(200).send("Successfully registered " + username + "!");
-                    console.log("Result: ", result);
                 });
             });
 
@@ -49,6 +61,16 @@ app.post('/register', (req, res) => {
     });
 });
 
+app.get("/login", (req, res) => {
+    if (req.session.user) {
+        // if our session already has a user, send true to the frontend
+        // frontend runs this get login on first render, so will have user data if cookie has not expired.
+        res.send({loggedIn: true, user: req.session.user})
+    } else {
+        res.send({loggedIn: false});
+    }
+})
+
 app.post('/login', (req, res) => {
     const username: string = req.body.username;
     const password: string = req.body.password;
@@ -57,9 +79,12 @@ app.post('/login', (req, res) => {
             throw err;
         }
         if (result.length > 0) {
-            const pw = JSON.parse(JSON.stringify(result));
-            bcrypt.compare(password, pw[0].password, (error, response) => {
+            // parse result string to grab properties easily
+            const resString = JSON.parse(JSON.stringify(result));
+            bcrypt.compare(password, resString[0].password, (error, response) => {
                 if (response) {
+                    // set our session's user to the result's username
+                    req.session.user = resString[0].username;
                     res.send(result);
                 }
                 else {

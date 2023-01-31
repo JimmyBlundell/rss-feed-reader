@@ -1,4 +1,4 @@
-import React, {useState, ChangeEvent, FormEvent} from "react";
+import React, {useState, ChangeEvent, FormEvent, useEffect} from "react";
 import FormInput from '../components/form-input/form-input';
 import {Button} from "react-bootstrap";
 import Axios from "axios";
@@ -37,6 +37,8 @@ const Login = () => {
         setPassword('');
     }
 
+    Axios.defaults.withCredentials = true;
+
     const register = () => {
         Axios.post('http://localhost:8000/register', {
             username: usernameReg,
@@ -58,9 +60,14 @@ const Login = () => {
             }
         });
     };
-    /**
-     * TODO: Add form components back in possibly, for a page refresh / re route?
-     */
+
+    // run on first render to see if user session is still active - remove console log later
+    useEffect(() => {
+        Axios.get("http://localhost:8000/login").then((response) => {
+            setLoginStatus(`Logged in as ${response.data.user}`);
+        })
+    }, [])
+
     return (
         <div className='App-header'>
             {needsRegister ?
@@ -110,43 +117,52 @@ const Login = () => {
                     </span>
                 </>
                 :
-                <div className="card">
-                    <h2>Sign In</h2>
-                    <FormInput
-                        label="Username"
-                        type="text"
-                        required
-                        name="text"
-                        value={username}
-                        onChange={(e) => {
-                            setUsername(e.target.value);
-                        }}
-                        id={"signInUsername"}
-                    />
-                    <FormInput
-                        label="Password"
-                        type='password'
-                        required
-                        name='password'
-                        value={password}
-                        onChange={(e) => {
-                            setPassword(e.target.value);
-                        }}
-                        id={"signInPassword"}
-                    />
-                    <div className={"button-group"}>
-                        <Button
-                            type="submit"
-                            onClick={login}
-                            disabled={!fieldsValidation(username, password)}
-                            size={"lg"}
-                        >
-                            Sign In
-                        </Button>
-                        &nbsp;
-                        <Button type="button" onClick={resetLogin} size={"lg"}>Clear</Button>
+                <>
+                    <div className="card">
+                        <h2>Sign In</h2>
+                        <FormInput
+                            label="Username"
+                            type="text"
+                            required
+                            name="text"
+                            value={username}
+                            onChange={(e) => {
+                                setUsername(e.target.value);
+                            }}
+                            id={"signInUsername"}/>
+                        <FormInput
+                            label="Password"
+                            type='password'
+                            required
+                            name='password'
+                            value={password}
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                            }}
+                            id={"signInPassword"}/>
+                        <div className={"button-group"}>
+                            <Button
+                                type="submit"
+                                onClick={login}
+                                disabled={!fieldsValidation(username, password)}
+                                size={"lg"}
+                            >
+                                Sign In
+                            </Button>
+                            &nbsp;
+                            <Button type="button" onClick={resetLogin} size={"lg"}>Clear</Button>
+                        </div>
                     </div>
-                </div>
+                    <br />
+                    <span>
+                        Need to create an account?{' '}
+                        <Button
+                            variant="outline-primary" size={"sm"}
+                            onClick={() => setNeedsRegister(true)}>
+                            Register here
+                        </Button>
+                    </span>
+                </>
             }
             <h1>{loginStatus}</h1>
         </div>
