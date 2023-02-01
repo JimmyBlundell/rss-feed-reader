@@ -71,14 +71,14 @@ const Login = () => {
     };
 
     // run on first render to see if user session is still active - remove console log later
-    useEffect(() => {
-        Axios.get("http://localhost:8000/isLoggedIn").then((response) => {
-            console.log("isLoggedIn resonse: ", response);
-            if (response.data.loggedIn === true) {
-                setLoginStatus(`Logged in as ${response.data.user}`);
-            }
-        })
-    }, [])
+    // useEffect(() => {
+    //     Axios.get("http://localhost:8000/isLoggedIn").then((response) => {
+    //         console.log("isLoggedIn resonse: ", response);
+    //         if (response.data.loggedIn === true) {
+    //             setLoginStatus(`Logged in as ${response.data.user}`);
+    //         }
+    //     })
+    // }, [])
 
     return (
         <div className='App-header'>

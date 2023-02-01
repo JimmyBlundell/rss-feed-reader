@@ -70,15 +70,24 @@ export function isLoggedIn( req: any, res: any) {
 }
 
 export function logout(req: any, res: any) {
-    if (req.session) {
-        req.session.destroy( (err: any) => {
-            if (err) {
-                res.status(400).send('Unable to log out');
-            } else {
-                res.send("Logout successful");
-            }
-        });
-    } else {
-        res.end();
+    try {
+        if (req.session && req.session.cookie) {
+            res.cookie('connect.sid', null, {
+                expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+                httpOnly: true,
+            });
+
+            req.session.destroy((error: any) => {
+                if (error) {
+                    res.status(400).send('Unable to log out');
+                } else {
+                    res.send("Logout successful");
+
+                }
+            });
+        }
+    } catch (error) {
+        console.log("Logout error: ", error);
+        res.send(error);
     }
 }
