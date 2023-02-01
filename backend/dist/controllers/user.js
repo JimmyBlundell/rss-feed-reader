@@ -51,7 +51,7 @@ function registerUser(req, res) {
             const hashedPassword = yield bcrypt.hash(password, 10);
             const newUser = userRepository.create({ username, password: hashedPassword });
             yield userRepository.save(newUser);
-            res.send(`User '${username}' created successfully`);
+            res.json({ message: `User '${username}' created successfully`, user: newUser });
         }
         catch (error) {
             console.log("Error: ", error.message);
@@ -83,7 +83,7 @@ function loginUser(req, res) {
                     req.session.user = resString.username;
                 }
             }
-            res.send('Successful login');
+            res.json({ message: 'Successful login', user: user });
         }
         catch (error) {
             console.log("Error: ", error.message);

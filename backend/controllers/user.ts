@@ -21,7 +21,7 @@ export async function registerUser(req: any, res: any) {
         const newUser = userRepository.create({ username, password: hashedPassword });
         await userRepository.save(newUser);
 
-        res.send(`User '${username}' created successfully`);
+        res.json({message: `User '${username}' created successfully`, user: newUser});
     } catch(error: any) {
         console.log("Error: ", error.message);
         res.status(500).send("Server Error on Register")
@@ -52,8 +52,7 @@ export async function loginUser(req: any, res: any) {
                 req.session.user = resString.username;
             }
         }
-
-        res.send('Successful login');
+        res.json({message: 'Successful login', user: user});
     } catch (error: any){
         console.log("Error: ", error.message);
         res.status(500).send("Server Error on Login");

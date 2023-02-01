@@ -5,7 +5,25 @@ import Navbar from 'react-bootstrap/Navbar';
 import Login from "./Pages/Login";
 import Home from "./Pages/Home";
 import ErrorPage from "./Pages/ErrorPage";
-import Logout  from "./utils/Logout";
+import Axios from "axios";
+
+const user = JSON.parse(localStorage.getItem('user') as string);
+console.log("user from app.tsx: ", user);
+
+// logout button is in the nav bar, so need this function here.
+const Logout = async () => {
+    try {
+        await Axios.get('http://localhost:8000/logout').then((response: any) => {
+            console.log(response);
+            localStorage.clear();
+            window.location.href = "http://localhost:3000/login";
+        }).catch((err: any) => {
+            alert(err);
+        });
+    } catch (error) {
+        alert(error)
+    }
+};
 
 const App = () => {
     return (

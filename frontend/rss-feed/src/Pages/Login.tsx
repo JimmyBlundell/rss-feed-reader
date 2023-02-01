@@ -46,7 +46,7 @@ const Login = () => {
             password: passwordReg,
         }).then((response) => {
             console.log("register response: ", response);
-            setLoginStatus(response?.data ?? "Something unknown occurred - uh oh.");
+            setLoginStatus(response?.data?.user?.username ?? "Something unknown occurred - uh oh.");
         }).catch(err => {
             alert(err.response.data);
         });
@@ -57,7 +57,8 @@ const Login = () => {
             username: username,
             password: password,
         }).then((response) => {
-            console.log("login response: ", response);
+            localStorage.setItem("user", JSON.stringify(response.data.user.username));
+            console.log("login response: ", response.data.user.username);
             // if (response?.data?.message) {
             //     setLoginStatus(response.data.message);
             // } else {
