@@ -8,9 +8,6 @@ import ErrorPage from "./Pages/ErrorPage";
 import Axios from "axios";
 import {NavDropdown} from "react-bootstrap";
 
-const user = JSON.parse(localStorage.getItem('user') as string);
-console.log("user from app.tsx: ", user);
-
 // logout button is in the nav bar, so need this function here.
 function Logout(){
     try {
