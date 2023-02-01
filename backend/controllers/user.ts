@@ -41,12 +41,16 @@ export async function loginUser(req: any, res: any) {
 
         if (!user) {
             return res.status(401).send('Invalid username or password');
-        }
+        } else {
+            const resString = JSON.parse(JSON.stringify(user));
+            const isPasswordValid = await bcrypt.compare(password, user.password);
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-
-        if (!isPasswordValid) {
-            return res.status(401).send('Invalid username or password');
+            if (!isPasswordValid) {
+                return res.status(401).send('Invalid username or password');
+            } else {
+                console.log("resString from loginUser in express: ", resString);
+                req.session.user = resString.username;
+            }
         }
 
         res.send('Successful login');
@@ -63,5 +67,19 @@ export function isLoggedIn( req: any, res: any) {
         res.send({loggedIn: true, user: req.session.user})
     } else {
         res.send({loggedIn: false});
+    }
+}
+
+export function logOut(req: any, res: any) {
+    if (req.session) {
+        req.session.destroy( (err: any) => {
+            if (err) {
+                res.status(400).send('Unable to log out');
+            } else {
+                res.send("Logout successful");
+            }
+        });
+    } else {
+        res.end();
     }
 }

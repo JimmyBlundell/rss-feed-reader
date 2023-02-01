@@ -125,16 +125,18 @@ const db_1 = require("./db");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "DELETE"],
     credentials: true
 }));
+// having issues with cors requests and logout, this fixes it but
+// is not safe. only used for dev purposes
 app.use(express_1.default.json());
 // Use express-session middleware
 app.use((0, express_session_1.default)({
-    secret: "secretKey",
+    secret: "rssfeedreadersecret",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }
+    cookie: { expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000) }
 }));
 app.use("/", user_1.default);
 const runApp = () => __awaiter(void 0, void 0, void 0, function* () {

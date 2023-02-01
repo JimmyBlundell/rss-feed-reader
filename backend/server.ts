@@ -114,18 +114,20 @@ import { initDb } from "./db";
 const app = express();
 app.use(cors({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "DELETE"],
     credentials: true
 }));
+// having issues with cors requests and logout, this fixes it but
+// is not safe. only used for dev purposes
 app.use(express.json());
 
 // Use express-session middleware
 app.use(
     session({
-        secret: "secretKey",
+        secret: "rssfeedreadersecret",
         resave: false,
         saveUninitialized: false,
-        cookie: { secure: false }
+        cookie: { expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000) }
     })
 );
 

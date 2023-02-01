@@ -1,11 +1,11 @@
 import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
-import Container from 'react-bootstrap/Container';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Login from "./Pages/Login";
 import Home from "./Pages/Home";
 import ErrorPage from "./Pages/ErrorPage";
+import Logout  from "./utils/Logout";
 
 const App = () => {
     return (
@@ -15,7 +15,10 @@ const App = () => {
                     <Nav.Link href={"/"}>Home</Nav.Link>
                 </Nav>
                 <Nav>
-                    <Nav.Link href={"/login"}>Log Out</Nav.Link>
+                    <Nav.Link href={"/login"}>Log In</Nav.Link>
+                </Nav>
+                <Nav>
+                    <Nav.Link onClick={Logout}>Log Out</Nav.Link>
                 </Nav>
             </Navbar>
             <Routes>

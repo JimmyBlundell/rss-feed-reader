@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isLoggedIn = exports.loginUser = exports.registerUser = void 0;
+exports.logOut = exports.isLoggedIn = exports.loginUser = exports.registerUser = void 0;
 const typeorm_1 = require("typeorm");
 const user_1 = require("../models/user");
 const bcrypt = __importStar(require("bcrypt"));
@@ -72,9 +72,16 @@ function loginUser(req, res) {
             if (!user) {
                 return res.status(401).send('Invalid username or password');
             }
-            const isPasswordValid = yield bcrypt.compare(password, user.password);
-            if (!isPasswordValid) {
-                return res.status(401).send('Invalid username or password');
+            else {
+                const resString = JSON.parse(JSON.stringify(user));
+                const isPasswordValid = yield bcrypt.compare(password, user.password);
+                if (!isPasswordValid) {
+                    return res.status(401).send('Invalid username or password');
+                }
+                else {
+                    console.log("resString from loginUser in express: ", resString);
+                    req.session.user = resString.username;
+                }
             }
             res.send('Successful login');
         }
@@ -96,3 +103,19 @@ function isLoggedIn(req, res) {
     }
 }
 exports.isLoggedIn = isLoggedIn;
+function logOut(req, res) {
+    if (req.session) {
+        req.session.destroy((err) => {
+            if (err) {
+                res.status(400).send('Unable to log out');
+            }
+            else {
+                res.send("Logout successful");
+            }
+        });
+    }
+    else {
+        res.end();
+    }
+}
+exports.logOut = logOut;

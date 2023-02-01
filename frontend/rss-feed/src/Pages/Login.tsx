@@ -44,7 +44,8 @@ const Login = () => {
             username: usernameReg,
             password: passwordReg,
         }).then((response) => {
-            setLoginStatus(response?.data?.message ?? response?.data ?? "Something unknown occurred - uh oh.");
+            console.log("register response: ", response);
+            setLoginStatus(response?.data ?? "Something unknown occurred - uh oh.");
         }).catch(err => {
             alert(err.response.data);
         });
@@ -55,6 +56,7 @@ const Login = () => {
             username: username,
             password: password,
         }).then((response) => {
+            console.log("login response: ", response);
             if (response?.data?.message) {
                 setLoginStatus(response.data.message);
             } else {
@@ -68,6 +70,7 @@ const Login = () => {
     // run on first render to see if user session is still active - remove console log later
     useEffect(() => {
         Axios.get("http://localhost:8000/isLoggedIn").then((response) => {
+            console.log("isLoggedIn resonse: ", response);
             if (response.data.loggedIn === true) {
                 setLoginStatus(`Logged in as ${response.data.user}`);
             }
