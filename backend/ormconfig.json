@@ -1,0 +1,10 @@
+{
+  "type": "mysql",
+  "host": "localhost",
+  "port": 3306,
+  "database": "rss-feed-db",
+  "username": "root",
+  "password": "password",
+  "entities": ["backend/models/user.ts"],
+  "synchronize": true
+}
