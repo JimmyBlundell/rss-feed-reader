@@ -5,6 +5,6 @@
   "database": "rss-feed-db",
   "username": "root",
   "password": "password",
-  "entities": ["backend/models/user.ts"],
+  "entities": ["backend/models/user.ts", "backend/models/rssfeed.ts"],
   "synchronize": true
 }

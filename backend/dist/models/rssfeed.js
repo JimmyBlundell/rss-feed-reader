@@ -9,28 +9,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.Rssfeed = void 0;
 const typeorm_1 = require("typeorm");
-const rssfeed_1 = require("./rssfeed");
-let User = class User {
+const user_1 = require("./user");
+let Rssfeed = class Rssfeed {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], User.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ unique: true }),
-    __metadata("design:type", String)
-], User.prototype, "username", void 0);
+], Rssfeed.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "password", void 0);
+], Rssfeed.prototype, "url", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(type => rssfeed_1.Rssfeed, rssFeed => rssFeed.user),
-    __metadata("design:type", Array)
-], User.prototype, "rssFeeds", void 0);
-User = __decorate([
+    (0, typeorm_1.ManyToOne)(type => user_1.User, user => user.rssFeeds),
+    __metadata("design:type", Number)
+], Rssfeed.prototype, "user", void 0);
+Rssfeed = __decorate([
     (0, typeorm_1.Entity)()
-], User);
-exports.User = User;
+], Rssfeed);
+exports.Rssfeed = Rssfeed;

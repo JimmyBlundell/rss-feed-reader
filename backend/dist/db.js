@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.close = exports.initDb = void 0;
 const typeorm_1 = require("typeorm");
 const user_1 = require("./models/user");
+const rssfeed_1 = require("./models/rssfeed");
 let dbConnection = null;
 function connect() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -22,7 +23,7 @@ function connect() {
             username: 'root',
             password: 'password',
             database: 'rss-feed-db',
-            entities: [user_1.User],
+            entities: [user_1.User, rssfeed_1.Rssfeed],
             synchronize: true,
             logging: true,
         });
