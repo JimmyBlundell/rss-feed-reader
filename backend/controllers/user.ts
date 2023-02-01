@@ -70,7 +70,7 @@ export function isLoggedIn( req: any, res: any) {
     }
 }
 
-export function logOut(req: any, res: any) {
+export function logout(req: any, res: any) {
     if (req.session) {
         req.session.destroy( (err: any) => {
             if (err) {

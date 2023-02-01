@@ -2,6 +2,7 @@ import React, {useState, ChangeEvent, FormEvent, useEffect} from "react";
 import FormInput from '../components/form-input/form-input';
 import {Button} from "react-bootstrap";
 import Axios from "axios";
+import {redirect} from "react-router-dom";
 
 import './Login.css';
 
@@ -39,8 +40,8 @@ const Login = () => {
 
     Axios.defaults.withCredentials = true;
 
-    const register = () => {
-        Axios.post('http://localhost:8000/register', {
+    const register = async () => {
+        await Axios.post('http://localhost:8000/register', {
             username: usernameReg,
             password: passwordReg,
         }).then((response) => {
@@ -51,17 +52,18 @@ const Login = () => {
         });
     };
 
-    const login = () => {
-        Axios.post('http://localhost:8000/login', {
+    const login = async () => {
+        await Axios.post('http://localhost:8000/login', {
             username: username,
             password: password,
         }).then((response) => {
             console.log("login response: ", response);
-            if (response?.data?.message) {
-                setLoginStatus(response.data.message);
-            } else {
-                setLoginStatus(`Logged in as ${response.data[0].username}`);
-            }
+            // if (response?.data?.message) {
+            //     setLoginStatus(response.data.message);
+            // } else {
+            //     setLoginStatus(`Logged in as ${response.data[0].username}`);
+            // }
+            window.location.href = "http://localhost:3000/";
         }).catch(err => {
             alert(err.response.data);
         });
@@ -162,7 +164,7 @@ const Login = () => {
                             <Button type="button" onClick={resetLogin} size={"lg"}>Clear</Button>
                         </div>
                     </div>
-                    <br />
+                    <br/>
                     <span>
                         Need to create an account?{' '}
                         <Button

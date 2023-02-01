@@ -15,9 +15,6 @@ const App = () => {
                     <Nav.Link href={"/"}>Home</Nav.Link>
                 </Nav>
                 <Nav>
-                    <Nav.Link href={"/login"}>Log In</Nav.Link>
-                </Nav>
-                <Nav>
                     <Nav.Link onClick={Logout}>Log Out</Nav.Link>
                 </Nav>
             </Navbar>

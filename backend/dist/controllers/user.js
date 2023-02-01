@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logOut = exports.isLoggedIn = exports.loginUser = exports.registerUser = void 0;
+exports.logout = exports.isLoggedIn = exports.loginUser = exports.registerUser = void 0;
 const typeorm_1 = require("typeorm");
 const user_1 = require("../models/user");
 const bcrypt = __importStar(require("bcrypt"));
@@ -103,7 +103,7 @@ function isLoggedIn(req, res) {
     }
 }
 exports.isLoggedIn = isLoggedIn;
-function logOut(req, res) {
+function logout(req, res) {
     if (req.session) {
         req.session.destroy((err) => {
             if (err) {
@@ -118,4 +118,4 @@ function logOut(req, res) {
         res.end();
     }
 }
-exports.logOut = logOut;
+exports.logout = logout;
