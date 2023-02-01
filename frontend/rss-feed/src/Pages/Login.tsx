@@ -57,7 +57,7 @@ const Login = () => {
             username: username,
             password: password,
         }).then((response) => {
-            localStorage.setItem("user", JSON.stringify(response.data.user.username));
+            localStorage.setItem("token", JSON.stringify(response.data.token));
             console.log("login response: ", response.data.user.username);
             // if (response?.data?.message) {
             //     setLoginStatus(response.data.message);

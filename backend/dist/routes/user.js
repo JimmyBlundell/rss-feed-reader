@@ -7,4 +7,5 @@ router.post('/register', user_1.registerUser);
 router.post('/login', user_1.loginUser);
 router.get('/isLoggedIn', user_1.isLoggedIn);
 router.get('/logout', user_1.logout);
+router.get('/profile', user_1.auth, user_1.profile);
 exports.default = router;
