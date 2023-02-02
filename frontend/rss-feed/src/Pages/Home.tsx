@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Button} from "react-bootstrap";
 import Axios from 'axios';
+import {useNavigate} from "react-router-dom";
 
 const Home: React.FC = () => {
     const [rssFeedUrl, setRssFeedUrl] = useState('');
@@ -40,6 +41,10 @@ const Home: React.FC = () => {
         }
     };
 
+    const urlValidation = (url: string) => {
+        return url.length > 0;
+    }
+
     return (
         <div className='App-header' style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
             <div className={"url-card"}>
@@ -52,7 +57,11 @@ const Home: React.FC = () => {
                         color: "#3e3e3e",
                         borderColor: "#45c3e6",
                     }}
-                    onClick={addRssFeed}>Save RSS Feed</Button>
+                    onClick={addRssFeed}
+                    disabled={!urlValidation(rssFeedUrl)}
+                >
+                    Save RSS Feed
+                </Button>
                 <br/>
                 <hr/>
                 <br/>
@@ -62,19 +71,25 @@ const Home: React.FC = () => {
                     gridGap: '20px'
                 }}>
                     {rssFeeds.map((url, index) => (
-                        <Button
-                            key={index}
-                            style={{
-                                margin: '10px 0',
-                                backgroundColor: "#45c3e6",
-                                color: "#3e3e3e",
-                                borderColor: "#45c3e6",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap"
-                            }}>
-                            {url}
-                        </Button>
+                        <>
+                            <Button
+                                key={index}
+                                style={{
+                                    margin: '10px 0',
+                                    backgroundColor: "#45c3e6",
+                                    color: "#3e3e3e",
+                                    borderColor: "#45c3e6",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap"
+                                }}
+                                onClick={(() => {
+
+                                })}
+                            >
+                                {url}
+                            </Button>
+                        </>
                     ))}
                 </div>
             </div>

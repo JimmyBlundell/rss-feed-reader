@@ -4,6 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Login from "./Pages/Login";
 import Home from "./Pages/Home";
+// import RssFeed from "./Pages/RssFeed";
 import ErrorPage from "./Pages/ErrorPage";
 import Axios from "axios";
 import {NavDropdown} from "react-bootstrap";
@@ -46,6 +47,7 @@ const App = () => {
             <Routes>
                 <Route path={"/"} element={<Home/>}/>
                 <Route path={"/login"} element={<Login/>}/>
+                {/*<Route path={"/rssfeed"} element={(url: string) => <RssFeed url={url}/>}/>*/}
                 <Route path={"*"} element={<ErrorPage/>}/>
             </Routes>
         </Router>
