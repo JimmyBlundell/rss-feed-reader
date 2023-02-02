@@ -24,7 +24,8 @@ function Logout(){
 }
 
 const App = () => {
-    const user = JSON.parse(localStorage.getItem("user") as string);
+    const user = JSON.parse(localStorage.getItem("userInfo") as string);
+    console.log("user: ", user);
     return (
         <Router>
             <Navbar bg={"dark"} variant={"dark"}>
@@ -33,7 +34,7 @@ const App = () => {
                 </Nav>
                 {user ?
                     <Nav>
-                        <NavDropdown title={user && user}>
+                        <NavDropdown title={user.username}>
                             <NavDropdown.Item onClick={Logout}>Log Out</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>

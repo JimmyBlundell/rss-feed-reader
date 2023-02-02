@@ -27,7 +27,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(type => rssfeed_1.Rssfeed, rssFeed => rssFeed.user),
+    (0, typeorm_1.OneToMany)(() => rssfeed_1.Rssfeed, rssFeed => rssFeed.user),
     __metadata("design:type", Array)
 ], User.prototype, "rssFeeds", void 0);
 User = __decorate([

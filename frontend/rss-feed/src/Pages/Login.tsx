@@ -22,7 +22,7 @@ const Login = () => {
     const [loginStatus, setLoginStatus] = useState('');
 
     // dictate whether register or login form is displayed
-    const [needsRegister, setNeedsRegister] = useState(true);
+    const [needsRegister, setNeedsRegister] = useState(false);
 
     // disable register / login button until fields are filled out appropriately
     const fieldsValidation = (un: string, pw: string) => {
@@ -47,6 +47,7 @@ const Login = () => {
         }).then((response) => {
             console.log("register response: ", response);
             setLoginStatus(response?.data?.user?.username ?? "Something unknown occurred - uh oh.");
+            setNeedsRegister(false);
         }).catch(err => {
             alert(err.response.data);
         });
@@ -57,28 +58,13 @@ const Login = () => {
             username: username,
             password: password,
         }).then((response) => {
-            localStorage.setItem("user", JSON.stringify(response.data.user.username));
-            console.log("login response: ", response.data.user.username);
-            // if (response?.data?.message) {
-            //     setLoginStatus(response.data.message);
-            // } else {
-            //     setLoginStatus(`Logged in as ${response.data[0].username}`);
-            // }
+            localStorage.setItem("userInfo", JSON.stringify(response?.data?.responseObject));
+            console.log("login response: ", response?.data?.responeObject);
             window.location.href = "http://localhost:3000/";
         }).catch(err => {
             alert(err.response.data);
         });
     };
-
-    // run on first render to see if user session is still active - remove console log later
-    // useEffect(() => {
-    //     Axios.get("http://localhost:8000/isLoggedIn").then((response) => {
-    //         console.log("isLoggedIn resonse: ", response);
-    //         if (response.data.loggedIn === true) {
-    //             setLoginStatus(`Logged in as ${response.data.user}`);
-    //         }
-    //     })
-    // }, [])
 
     return (
         <div className='App-header'>
