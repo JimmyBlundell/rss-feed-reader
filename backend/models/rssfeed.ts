@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn} from 'typeorm';
 import { User } from "./user";
 @Entity()
 export class Rssfeed {
@@ -8,6 +8,7 @@ export class Rssfeed {
     @Column()
     url: string;
 
-    @ManyToOne(() => User, user => user.rssFeeds)
-    user: number;
+    @ManyToOne(() => User)
+    @JoinColumn({name: "userId"})
+    user: User;
 }

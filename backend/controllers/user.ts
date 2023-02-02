@@ -52,7 +52,8 @@ export async function loginUser(req: any, res: any) {
                 req.session.user = resString.username;
             }
         }
-        res.json({message: 'Successful login', user: user});
+        const responseObject = {username: user.username, id: user.id};
+        res.json({message: 'Successful login', responseObject});
     } catch (error: any){
         console.log("Error: ", error.message);
         res.status(500).send("Server Error on Login");

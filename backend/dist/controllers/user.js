@@ -83,7 +83,8 @@ function loginUser(req, res) {
                     req.session.user = resString.username;
                 }
             }
-            res.json({ message: 'Successful login', user: user });
+            const responseObject = { username: user.username, id: user.id };
+            res.json({ message: 'Successful login', responseObject });
         }
         catch (error) {
             console.log("Error: ", error.message);

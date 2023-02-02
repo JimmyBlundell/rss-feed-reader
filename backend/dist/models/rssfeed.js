@@ -23,8 +23,9 @@ __decorate([
     __metadata("design:type", String)
 ], Rssfeed.prototype, "url", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(type => user_1.User, user => user.rssFeeds),
-    __metadata("design:type", Number)
+    (0, typeorm_1.ManyToOne)(() => user_1.User),
+    (0, typeorm_1.JoinColumn)({ name: "userId" }),
+    __metadata("design:type", user_1.User)
 ], Rssfeed.prototype, "user", void 0);
 Rssfeed = __decorate([
     (0, typeorm_1.Entity)()

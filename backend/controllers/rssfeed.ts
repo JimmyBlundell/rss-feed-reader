@@ -1,9 +1,9 @@
-import { getRepository } from 'typeorm';
-import { Rssfeed } from '../models/rssfeed';
+import {getRepository} from 'typeorm';
+import {Rssfeed} from '../models/rssfeed';
 
 export async function addRssFeed(req: any, res: any) {
     const {user, url} = req.body;
-    if (!user || ! url) {
+    if (!user || !url) {
         res.status(400).send('Missing user info and/or url');
     }
     try {
@@ -17,10 +17,24 @@ export async function addRssFeed(req: any, res: any) {
         await rssFeedRepository.save(newRssFeed);
 
 
-
-    } catch(error: any) {
+    } catch (error: any) {
         console.log("Error: ", error.message);
         res.send(error);
+    }
+}
+
+export async function getFeeds(req: any, res: any) {
+    const {user, url} = req.body;
+    if (!user || !url) {
+        res.status(400).send('Missing user info and/or url');
+    }
+    try {
+        const userId = req.userId;
+        const rssFeeds = await getRepository(Rssfeed).find({where: {userId}});
+        res.json(rssFeeds);
+    } catch (err: any) {
+        console.log("Error: ", err.message);
+        res.send(err);
     }
 }
 

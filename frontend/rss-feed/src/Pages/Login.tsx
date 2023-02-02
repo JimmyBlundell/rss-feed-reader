@@ -1,8 +1,9 @@
-import React, {useState, ChangeEvent, FormEvent, useEffect} from "react";
+import React, {useState, useContext} from "react";
+import { useNavigate } from "react-router-dom";
 import FormInput from '../components/form-input/form-input';
 import {Button} from "react-bootstrap";
 import Axios from "axios";
-import {redirect} from "react-router-dom";
+import {Context} from "../App";
 
 import './Login.css';
 
@@ -14,15 +15,18 @@ type User = {
 }
 
 const Login = () => {
+    const navigate = useNavigate();
     const [user, setUser] = useState<User | null>();
     const [usernameReg, setUsernameReg] = useState('');
     const [passwordReg, setPasswordReg] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loginStatus, setLoginStatus] = useState('');
+    const contextObject = useContext(Context);
+    console.log("context user: ", contextObject?.username);
 
     // dictate whether register or login form is displayed
-    const [needsRegister, setNeedsRegister] = useState(true);
+    const [needsRegister, setNeedsRegister] = useState(false);
 
     // disable register / login button until fields are filled out appropriately
     const fieldsValidation = (un: string, pw: string) => {
@@ -47,6 +51,7 @@ const Login = () => {
         }).then((response) => {
             console.log("register response: ", response);
             setLoginStatus(response?.data?.user?.username ?? "Something unknown occurred - uh oh.");
+            setNeedsRegister(false);
         }).catch(err => {
             alert(err.response.data);
         });
@@ -57,15 +62,15 @@ const Login = () => {
             username: username,
             password: password,
         }).then((response) => {
-            localStorage.setItem("user", JSON.stringify(response.data.user.username));
-            console.log("login response: ", response.data.user.username);
-            // if (response?.data?.message) {
-            //     setLoginStatus(response.data.message);
-            // } else {
-            //     setLoginStatus(`Logged in as ${response.data[0].username}`);
-            // }
-            window.location.href = "http://localhost:3000/";
+            console.log("login response: ", response.data);
+            localStorage.setItem("userInfo", JSON.stringify(response.data.responseObject));
+            console.log("context object before: ", contextObject);
+            contextObject?.setUser(JSON.stringify(response.data.responseObject.username));
+            contextObject?.setUserId(response.data.responseObject.id);
+            console.log("context object: ", contextObject);
+            navigate("/");
         }).catch(err => {
+            console.log("err login: ", err);
             alert(err.response.data);
         });
     };
