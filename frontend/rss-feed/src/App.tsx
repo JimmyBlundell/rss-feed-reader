@@ -25,7 +25,6 @@ function Logout(){
 
 const App = () => {
     const user = JSON.parse(localStorage.getItem("userInfo") as string);
-    console.log("user: ", user);
     return (
         <Router>
             <Navbar bg={"dark"} variant={"dark"}>

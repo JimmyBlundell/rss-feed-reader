@@ -24,6 +24,21 @@ export async function addRssFeed(req: any, res: any) {
     }
 }
 
+export async function getFeeds(req: any, res: any) {
+    const {user, url} = req.body;
+    if (!user || !url) {
+        res.status(400).send('Missing user info and/or url');
+    }
+    try {
+        const userId = req.userId;
+        const rssFeeds = await getRepository(Rssfeed).find({where: {userId}});
+        res.json(rssFeeds);
+    } catch (err: any) {
+        console.log("Error: ", err.message);
+        res.send(err);
+    }
+}
+
 export async function deleteRssFeed(req: any, res: any) {
 
 }

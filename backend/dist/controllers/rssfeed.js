@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteRssFeed = exports.addRssFeed = void 0;
+exports.deleteRssFeed = exports.getFeeds = exports.addRssFeed = void 0;
 const typeorm_1 = require("typeorm");
 const rssfeed_1 = require("../models/rssfeed");
 function addRssFeed(req, res) {
@@ -34,6 +34,24 @@ function addRssFeed(req, res) {
     });
 }
 exports.addRssFeed = addRssFeed;
+function getFeeds(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { user, url } = req.body;
+        if (!user || !url) {
+            res.status(400).send('Missing user info and/or url');
+        }
+        try {
+            const userId = req.userId;
+            const rssFeeds = yield (0, typeorm_1.getRepository)(rssfeed_1.Rssfeed).find({ where: { userId } });
+            res.json(rssFeeds);
+        }
+        catch (err) {
+            console.log("Error: ", err.message);
+            res.send(err);
+        }
+    });
+}
+exports.getFeeds = getFeeds;
 function deleteRssFeed(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
     });

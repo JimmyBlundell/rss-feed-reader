@@ -1,8 +1,7 @@
-import React, {useState, ChangeEvent, FormEvent, useEffect} from "react";
+import React, {useState} from "react";
 import FormInput from '../components/form-input/form-input';
 import {Button} from "react-bootstrap";
 import Axios from "axios";
-import {redirect} from "react-router-dom";
 
 import './Login.css';
 
@@ -45,7 +44,6 @@ const Login = () => {
             username: usernameReg,
             password: passwordReg,
         }).then((response) => {
-            console.log("register response: ", response);
             setLoginStatus(response?.data?.user?.username ?? "Something unknown occurred - uh oh.");
             setNeedsRegister(false);
         }).catch(err => {
@@ -59,7 +57,6 @@ const Login = () => {
             password: password,
         }).then((response) => {
             localStorage.setItem("userInfo", JSON.stringify(response?.data?.responseObject));
-            console.log("login response: ", response?.data?.responeObject);
             window.location.href = "http://localhost:3000/";
         }).catch(err => {
             alert(err.response.data);
