@@ -15,17 +15,23 @@ const rssfeed_1 = require("../models/rssfeed");
 function addRssFeed(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { user, url } = req.body;
+        console.log("addRssFeed hit with: ", { user, url });
         if (!user || !url) {
             res.status(400).send('Missing user info and/or url');
         }
         try {
             const rssFeedRepository = (0, typeorm_1.getRepository)(rssfeed_1.Rssfeed);
-            const existingRssFeed = yield rssFeedRepository.findOne({ where: { url: url, userId: user } });
+            const existingRssFeed = yield rssFeedRepository.findOne({ where: { url: url, user: user } });
             if (existingRssFeed) {
                 return res.status(409).send("RSS Feed is already saved.");
             }
             const newRssFeed = rssFeedRepository.create({ user, url });
+            console.log("------newRssFeed-------", newRssFeed);
             yield rssFeedRepository.save(newRssFeed);
+            res.status(200).json({
+                message: "RSS Feed added successfully!",
+                rssFeed: newRssFeed
+            });
         }
         catch (error) {
             console.log("Error: ", error.message);
@@ -36,13 +42,15 @@ function addRssFeed(req, res) {
 exports.addRssFeed = addRssFeed;
 function getFeeds(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { user, url } = req.body;
-        if (!user || !url) {
-            res.status(400).send('Missing user info and/or url');
+        console.log("-----req structure----- ", req.params);
+        const user = req.params.user;
+        console.log("-----user----- ", user);
+        if (!user) {
+            res.status(400).send('Missing user info - please log in and try again');
+            return;
         }
         try {
-            const userId = req.userId;
-            const rssFeeds = yield (0, typeorm_1.getRepository)(rssfeed_1.Rssfeed).find({ where: { userId } });
+            const rssFeeds = yield (0, typeorm_1.getRepository)(rssfeed_1.Rssfeed).find({ where: { user } });
             res.json(rssFeeds);
         }
         catch (err) {

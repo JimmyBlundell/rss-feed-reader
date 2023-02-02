@@ -27,7 +27,7 @@ const App = () => {
     const user = JSON.parse(localStorage.getItem("userInfo") as string);
     return (
         <Router>
-            <Navbar bg={"dark"} variant={"dark"}>
+            <Navbar bg={"dark"} variant={"dark"} style={{top: "-22px"}}>
                 <Nav>
                     <Nav.Link href={"/"}>Home</Nav.Link>
                 </Nav>

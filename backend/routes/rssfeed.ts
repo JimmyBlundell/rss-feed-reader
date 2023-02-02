@@ -7,6 +7,6 @@ const router = Router();
 
 router.post('/addRssFeed', addRssFeed);
 router.post('/deleteRssFeed', deleteRssFeed);
-router.get('/getFeeds', getFeeds);
+router.get('/getFeeds/:user', getFeeds);
 
 export default router;
