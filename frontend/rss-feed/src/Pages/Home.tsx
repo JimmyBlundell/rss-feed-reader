@@ -11,9 +11,8 @@ const Home: React.FC = () => {
 
     const fetchData = async () => {
         try {
-            const {data} = await Axios.get(`http://localhost:8000/getFeeds/${userId}`, {
-            });
-            const userFeedUrls: string[]= [];
+            const {data} = await Axios.get(`http://localhost:8000/getFeeds/${userId}`, {});
+            const userFeedUrls: string[] = [];
             data.map((feed: { id: string, url: string; }) => userFeedUrls.push(feed.url));
             setRssFeeds(userFeedUrls);
         } catch (error) {
@@ -47,7 +46,37 @@ const Home: React.FC = () => {
                 <input type="text" placeholder="Enter any RSS Feed URL" value={rssFeedUrl}
                        onChange={(e) => setRssFeedUrl(e.target.value)}/>
                 <br/>
-                <Button onClick={addRssFeed}>Save RSS Feed</Button>
+                <Button
+                    style={{
+                        backgroundColor: "#45c3e6",
+                        color: "#3e3e3e",
+                        borderColor: "#45c3e6",
+                    }}
+                    onClick={addRssFeed}>Save RSS Feed</Button>
+                <br/>
+                <hr/>
+                <br/>
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                    gridGap: '20px'
+                }}>
+                    {rssFeeds.map((url, index) => (
+                        <Button
+                            key={index}
+                            style={{
+                                margin: '10px 0',
+                                backgroundColor: "#45c3e6",
+                                color: "#3e3e3e",
+                                borderColor: "#45c3e6",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap"
+                            }}>
+                            {url}
+                        </Button>
+                    ))}
+                </div>
             </div>
         </div>
     );
