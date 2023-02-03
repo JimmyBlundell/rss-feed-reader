@@ -2,10 +2,13 @@ import React, {useState, useEffect} from 'react';
 import {Button} from "react-bootstrap";
 import Axios from 'axios';
 import {useNavigate} from "react-router-dom";
+import RssFeed from "./RssFeed";
 
 const Home: React.FC = () => {
     const [rssFeedUrl, setRssFeedUrl] = useState('');
     const [rssFeeds, setRssFeeds] = useState<string[]>(['']);
+    const [isViewingFeed, setIsViewingFeed] = useState(false);
+    const [viewingUrl, setViewingUrl] = useState('');
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo') as string);
     const userId = userInfo.id;
@@ -46,8 +49,9 @@ const Home: React.FC = () => {
     }
 
     return (
-        <div className='App-header' style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-            <div className={"url-card"}>
+        <div className='App-header' style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            {!isViewingFeed &&
+            <div className={"url-card"} style={{position: "fixed", top: "60px"}}>
                 <input type="text" placeholder="Enter any RSS Feed URL" value={rssFeedUrl}
                        onChange={(e) => setRssFeedUrl(e.target.value)}/>
                 <br/>
@@ -71,7 +75,9 @@ const Home: React.FC = () => {
                     gridGap: '20px'
                 }}>
                     {rssFeeds.map((url, index) => (
+
                         <>
+                            {console.log("index, url: ", index, url)}
                             <Button
                                 key={index}
                                 style={{
@@ -84,7 +90,9 @@ const Home: React.FC = () => {
                                     whiteSpace: "nowrap"
                                 }}
                                 onClick={(() => {
-
+                                    console.log("URL URL URL: ", url);
+                                    setIsViewingFeed(true);
+                                    setViewingUrl(url);
                                 })}
                             >
                                 {url}
@@ -93,6 +101,8 @@ const Home: React.FC = () => {
                     ))}
                 </div>
             </div>
+            }
+            {viewingUrl && <RssFeed url={viewingUrl}/>}
         </div>
     );
 };
