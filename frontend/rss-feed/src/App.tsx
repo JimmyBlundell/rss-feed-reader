@@ -30,7 +30,7 @@ const App = () => {
         <Router>
             <Navbar bg={"dark"} variant={"dark"} style={{top: "-22px"}}>
                 <Nav>
-                    <Nav.Link href={"/"}>Home</Nav.Link>
+                    <Nav.Link href={"/"}>Add/View Feeds</Nav.Link>
                 </Nav>
                 {user ?
                     <Nav>
@@ -47,7 +47,6 @@ const App = () => {
             <Routes>
                 <Route path={"/"} element={<Home/>}/>
                 <Route path={"/login"} element={<Login/>}/>
-                {/*<Route path={"/rssfeed"} element={(url: string) => <RssFeed url={url}/>}/>*/}
                 <Route path={"*"} element={<ErrorPage/>}/>
             </Routes>
         </Router>

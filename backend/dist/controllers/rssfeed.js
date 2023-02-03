@@ -61,10 +61,12 @@ exports.getFeeds = getFeeds;
 function deleteRssFeed(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const user = req.params.user;
-        const url = req.params.url;
+        let url = req.params.url;
         if (!user || !url) {
             res.status(400).send('Missing user info and/or url');
         }
+        // url was encoded on frontend, so decode it here
+        url = Buffer.from(url, 'base64').toString('utf8');
         try {
             const rssFeedRepository = (0, typeorm_1.getRepository)(rssfeed_1.Rssfeed);
             const existingRssFeed = yield rssFeedRepository.findOne({ where: { url: url, user: user } });

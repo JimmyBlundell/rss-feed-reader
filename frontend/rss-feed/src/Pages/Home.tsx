@@ -1,19 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import {Button} from "react-bootstrap";
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
+import {Button, Dropdown, DropdownButton} from "react-bootstrap";
 import Axios from 'axios';
-import {useNavigate} from "react-router-dom";
 import RssFeed from "./RssFeed";
-
 
 const Home: React.FC = () => {
     const [rssFeedUrl, setRssFeedUrl] = useState('');
     // collection of all a user's rss feeds
     const [rssFeeds, setRssFeeds] = useState<string[]>(['']);
-    // determine if we are viewing the feed URLs, or an rssFeed itself
+    // determine if we are viewing the feed URLs, or results of an rssFeed itself
     const [isViewingFeed, setIsViewingFeed] = useState(false);
-    // URL for feed we want to view
+    // URL for feed we want to view - will use this to fetch feed data
     const [viewingUrl, setViewingUrl] = useState('');
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo') as string);
@@ -64,10 +60,17 @@ const Home: React.FC = () => {
             alert("Missing url to delete.");
             return;
         }
+        // Encode the url so that the '/' characters don't interfere with routes when passing urls
+        const encodedUrl: string = Buffer.from(url, 'utf8').toString('base64');
+
         try {
             await
-                Axios.delete(`http://localhost:8000/deleteRssFeed/${userId}/${url}`)
-                    .then(() => setRssFeeds(rssFeeds.filter(feed => feed !== url)))
+                Axios.delete(`http://localhost:8000/deleteRssFeed/${userId}/${encodedUrl}`)
+                    .then(() => {
+                            setRssFeeds(rssFeeds.filter(feed => feed !== url));
+                            alert(`Successfully deleted ${url} from your feeds`);
+                        }
+                    )
         } catch (error) {
             console.error(error);
         }

@@ -1,10 +1,16 @@
 import React, {useState, useEffect} from 'react';
+import {Button, Card} from "react-bootstrap";
 import Parser from 'rss-parser';
 import striptags from "striptags";
 
 type RssFeedProps = {
     url: string
 }
+
+const goToLink = (url: string) => {
+    window.location.href = url;
+}
+
 
 const RssFeed = ({url}: RssFeedProps) => {
 
@@ -32,22 +38,21 @@ const RssFeed = ({url}: RssFeedProps) => {
 
 
     return (
-        <div className='App-header' style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-            {feeds.map((feed, index) => (
-                <div
-                    key={index}
-                    style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-                        gridGap: '20px'
-                    }}>
-                    <h2 style={{color: "red"}}>{feed.title}</h2>
-                    <p style={{color: "red"}}>{feed.pubDate}</p>
-                    <p style={{color: "red"}}>{feed.contentSnippet}</p>
-                    <p style={{color: "red"}}>{feed.creator}</p>
-                    <p style={{color: "red"}}>{feed.guid}</p>
-                </div>
-            ))}
+        <div className="feed-page">
+            {feeds.map((feed, index) => {
+                return (
+                    <Card key={index}>
+                        <Card.Title style={{padding: "20px"}}>{feed.title}</Card.Title>
+                        <Card.Body>
+                            <p>{feed.description}</p>
+                            <p>{feed.contentSnippet}</p>
+                            <Button variant="primary" onClick={goToLink.bind(this, feed.link)}>
+                                Open
+                            </Button>{" "}
+                        </Card.Body>
+                    </Card>
+                );
+            })}
         </div>
     );
 }

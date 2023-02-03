@@ -45,10 +45,12 @@ export async function getFeeds(req: any, res: any) {
 
 export async function deleteRssFeed(req: any, res: any) {
     const user = req.params.user;
-    const url = req.params.url;
+    let url = req.params.url;
     if (!user || ! url) {
         res.status(400).send('Missing user info and/or url');
     }
+    // url was encoded on frontend, so decode it here
+    url = Buffer.from(url, 'base64').toString('utf8');
     try {
         const rssFeedRepository = getRepository(Rssfeed);
         const existingRssFeed = await rssFeedRepository.findOne({where: {url: url, user: user}})
