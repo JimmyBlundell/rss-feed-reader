@@ -42,9 +42,7 @@ function addRssFeed(req, res) {
 exports.addRssFeed = addRssFeed;
 function getFeeds(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log("-----req structure----- ", req.params);
         const user = req.params.user;
-        console.log("-----user----- ", user);
         if (!user) {
             res.status(400).send('Missing user info - please log in and try again');
             return;
@@ -62,6 +60,24 @@ function getFeeds(req, res) {
 exports.getFeeds = getFeeds;
 function deleteRssFeed(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const user = req.params.user;
+        const url = req.params.url;
+        if (!user || !url) {
+            res.status(400).send('Missing user info and/or url');
+        }
+        try {
+            const rssFeedRepository = (0, typeorm_1.getRepository)(rssfeed_1.Rssfeed);
+            const existingRssFeed = yield rssFeedRepository.findOne({ where: { url: url, user: user } });
+            if (!existingRssFeed) {
+                return;
+            }
+            yield rssFeedRepository.delete({ user, url });
+            res.status(200).json({ message: "RSS Feed deleted successfully!" });
+        }
+        catch (error) {
+            console.log("Error on delete: ", error.message);
+            res.send(error);
+        }
     });
 }
 exports.deleteRssFeed = deleteRssFeed;

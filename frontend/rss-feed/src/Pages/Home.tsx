@@ -1,13 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import {Button} from "react-bootstrap";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 import Axios from 'axios';
 import {useNavigate} from "react-router-dom";
 import RssFeed from "./RssFeed";
 
+
 const Home: React.FC = () => {
     const [rssFeedUrl, setRssFeedUrl] = useState('');
+    // collection of all a user's rss feeds
     const [rssFeeds, setRssFeeds] = useState<string[]>(['']);
+    // determine if we are viewing the feed URLs, or an rssFeed itself
     const [isViewingFeed, setIsViewingFeed] = useState(false);
+    // URL for feed we want to view
     const [viewingUrl, setViewingUrl] = useState('');
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo') as string);
@@ -48,6 +54,25 @@ const Home: React.FC = () => {
         return url.length > 0;
     }
 
+
+    const deleteRssFeed = async (url: string) => {
+        if (!userId) {
+            alert("Missing user information from local storage. Try logging in again");
+            return;
+        }
+        if (!url) {
+            alert("Missing url to delete.");
+            return;
+        }
+        try {
+            await
+                Axios.delete(`http://localhost:8000/deleteRssFeed/${userId}/${url}`)
+                    .then(() => setRssFeeds(rssFeeds.filter(feed => feed !== url)))
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <div className='App-header' style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             {!isViewingFeed &&
@@ -71,32 +96,61 @@ const Home: React.FC = () => {
                 <br/>
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                    gridTemplateColumns: 'repeat(3, minmax(150px, 1fr))',
                     gridGap: '20px'
                 }}>
                     {rssFeeds.map((url, index) => (
 
                         <>
-                            {console.log("index, url: ", index, url)}
-                            <Button
+                            {/*<Button*/}
+                            {/*    key={index}*/}
+                            {/*    style={{*/}
+                            {/*        margin: '10px 0',*/}
+                            {/*        backgroundColor: "#45c3e6",*/}
+                            {/*        color: "#3e3e3e",*/}
+                            {/*        borderColor: "#45c3e6",*/}
+                            {/*        overflow: "hidden",*/}
+                            {/*        textOverflow: "ellipsis",*/}
+                            {/*        whiteSpace: "nowrap"*/}
+                            {/*    }}*/}
+                            {/*    onClick={(() => {*/}
+                            {/*        // console.log("URL URL URL: ", url);*/}
+                            {/*        // setIsViewingFeed(true);*/}
+                            {/*        // setViewingUrl(url);*/}
+                            {/*    })}*/}
+                            {/*>*/}
+                            {/*    {url}*/}
+                            {/*</Button>*/}
+                            <DropdownButton
                                 key={index}
-                                style={{
-                                    margin: '10px 0',
-                                    backgroundColor: "#45c3e6",
-                                    color: "#3e3e3e",
-                                    borderColor: "#45c3e6",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                    whiteSpace: "nowrap"
-                                }}
-                                onClick={(() => {
-                                    console.log("URL URL URL: ", url);
-                                    setIsViewingFeed(true);
-                                    setViewingUrl(url);
-                                })}
+                                id="dropdown-basic-button"
+                                title={
+                                    <div style={{
+                                        maxWidth: '250px',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap'
+                                    }}>
+                                        {url}
+                                    </div>
+                                }
                             >
-                                {url}
-                            </Button>
+                                <Dropdown.Item
+                                    onClick={() => {
+                                        console.log("url url: ", url);
+                                        setIsViewingFeed(true);
+                                        setViewingUrl(url)
+                                    }}
+                                >
+                                    View RSS Feed
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                    onClick={() => deleteRssFeed(url)}
+                                >
+                                    Delete
+                                </Dropdown.Item>
+                            </DropdownButton>
+
                         </>
                     ))}
                 </div>

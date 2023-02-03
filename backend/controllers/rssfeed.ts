@@ -1,5 +1,6 @@
-import { getRepository } from 'typeorm';
+import { getRepository, getConnection } from 'typeorm';
 import { Rssfeed } from '../models/rssfeed';
+import rssfeed from "../routes/rssfeed";
 
 export async function addRssFeed(req: any, res: any) {
     const {user, url} = req.body;
@@ -28,9 +29,7 @@ export async function addRssFeed(req: any, res: any) {
 }
 
 export async function getFeeds(req: any, res: any) {
-    console.log("-----req structure----- ", req.params);
     const user = req.params.user;
-    console.log("-----user----- ", user);
     if (!user) {
         res.status(400).send('Missing user info - please log in and try again');
         return;
@@ -45,5 +44,21 @@ export async function getFeeds(req: any, res: any) {
 }
 
 export async function deleteRssFeed(req: any, res: any) {
-
+    const user = req.params.user;
+    const url = req.params.url;
+    if (!user || ! url) {
+        res.status(400).send('Missing user info and/or url');
+    }
+    try {
+        const rssFeedRepository = getRepository(Rssfeed);
+        const existingRssFeed = await rssFeedRepository.findOne({where: {url: url, user: user}})
+        if (!existingRssFeed) {
+            return;
+        }
+        await rssFeedRepository.delete({user, url});
+        res.status(200).json({message: "RSS Feed deleted successfully!"});
+    } catch (error: any) {
+        console.log("Error on delete: ", error.message);
+        res.send(error);
+    }
 }
