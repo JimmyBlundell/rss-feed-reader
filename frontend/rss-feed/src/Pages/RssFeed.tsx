@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Button, Card, Dropdown, DropdownButton} from "react-bootstrap";
 import Parser from 'rss-parser';
-import striptags from "striptags";
 
 type RssFeedProps = {
     url: string
@@ -10,29 +9,6 @@ type RssFeedProps = {
 const goToLink = (url: string) => {
     window.location.href = url;
 }
-
-// helper function to sort feeds based on a criteria the user selects
-// const sortFeeds = (feed: Array<any>, sortCriteria: string): any => {
-//     const sortedFeeds = feed.sort((a, b) => {
-//         // sort by date
-//         if (sortCriteria === 'date') {
-//             return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
-//         }
-//
-//         // sort by title
-//         if (sortCriteria === 'title') {
-//             return a.title.localeCompare(b.title);
-//         }
-//
-//         // sort by description
-//         if (sortCriteria === 'description') {
-//             return a.description.localeCompare(b.description);
-//         }
-//
-//         // return feeds in original order by default
-//         return 0;
-//     });
-// }
 
 const RssFeed = ({url}: RssFeedProps) => {
 

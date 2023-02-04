@@ -13,21 +13,26 @@ const Home: React.FC = () => {
     const [viewingUrl, setViewingUrl] = useState('');
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo') as string);
-    const userId = userInfo.id;
+    const userId = userInfo?.id;
 
-    const fetchData = async () => {
-        try {
-            const {data} = await Axios.get(`http://localhost:8000/getFeeds/${userId}`, {});
-            const userFeedUrls: string[] = [];
-            data.map((feed: { id: string, url: string; }) => userFeedUrls.push(feed.url));
-            setRssFeeds(userFeedUrls);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+
 
     useEffect(() => {
-        console.log("hit use effect");
+        const fetchData = async () => {
+            if (userId) {
+                try {
+                    const {data} = await Axios.get(`http://localhost:8000/getFeeds/${userId}`, {});
+                    const userFeedUrls: string[] = [];
+                    data.map((feed: { id: string, url: string; }) => userFeedUrls.push(feed.url));
+                    setRssFeeds(userFeedUrls);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            else {
+                return;
+            }
+        }
         fetchData().then(() => console.log("Fetched user rss feeds on page load"));
     }, []);
 

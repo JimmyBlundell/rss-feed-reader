@@ -4,10 +4,10 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Login from "./Pages/Login";
 import Home from "./Pages/Home";
-// import RssFeed from "./Pages/RssFeed";
 import ErrorPage from "./Pages/ErrorPage";
 import Axios from "axios";
 import {NavDropdown} from "react-bootstrap";
+import {useEffect, useState} from "react";
 
 // logout button is in the nav bar, so need this function here.
 function Logout(){

@@ -2,18 +2,10 @@ import React, {useState} from "react";
 import FormInput from '../components/form-input/form-input';
 import {Button} from "react-bootstrap";
 import Axios from "axios";
-
 import './Login.css';
 
-// TypeScript declarations
-type User = {
-    id: number,
-    username: string,
-    password: string
-}
 
 const Login = () => {
-    const [user, setUser] = useState<User | null>();
     const [usernameReg, setUsernameReg] = useState('');
     const [passwordReg, setPasswordReg] = useState('');
     const [username, setUsername] = useState('');
