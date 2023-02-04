@@ -99,7 +99,7 @@ const Home: React.FC = () => {
                 <br/>
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: "repeat(auto-fit, minmax(255px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(255px, 1fr))",
                     gridGap: '20px'
                 }}>
                     {rssFeeds.map((url, index) => (
@@ -118,7 +118,6 @@ const Home: React.FC = () => {
                                             {url}
                                         </div>
                                     }
-                                    style={{margin: "auto", width: "100%", display: "block", minWidth: "275px"}}
                                 >
                                 <Dropdown.Item
                                     onClick={() => {
