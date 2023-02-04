@@ -1,5 +1,3 @@
-
-
 import { Router } from 'express';
 import { addRssFeed, deleteRssFeed, getFeeds } from '../controllers/rssfeed';
 

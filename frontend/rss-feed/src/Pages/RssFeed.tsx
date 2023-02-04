@@ -40,12 +40,19 @@ const RssFeed = ({url}: RssFeedProps) => {
     return (
         <div className="feed-page">
             {feeds.map((feed, index) => {
+                let image = null;
+                if (feed.enclosure && feed.enclosure.url) {
+                    image = <img src={feed.enclosure.url} alt={feed.title} height={"200"} width={"200"}/>
+                }
                 return (
                     <Card key={index}>
                         <Card.Title style={{padding: "20px"}}>{feed.title}</Card.Title>
+                        <Card.Title style={{padding: "20px"}}>{feed.pubDate}</Card.Title>
+                        {image}
                         <Card.Body>
                             <p>{feed.description}</p>
                             <p>{feed.contentSnippet}</p>
+                            <p>{feed.creator}</p>
                             <Button variant="primary" onClick={goToLink.bind(this, feed.link)}>
                                 Open
                             </Button>{" "}
