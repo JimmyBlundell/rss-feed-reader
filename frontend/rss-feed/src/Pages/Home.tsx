@@ -79,7 +79,7 @@ const Home: React.FC = () => {
     return (
         <div className='App-header' style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             {!isViewingFeed &&
-            <div className={"url-card"} style={{position: "fixed", top: "60px"}}>
+            <div className={"url-card"} style={{position: "absolute", top: "60px"}}>
                 <input type="text" placeholder="Enter any RSS Feed URL" value={rssFeedUrl}
                        onChange={(e) => setRssFeedUrl(e.target.value)}/>
                 <br/>
@@ -99,45 +99,27 @@ const Home: React.FC = () => {
                 <br/>
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(3, minmax(150px, 1fr))',
+                    gridTemplateColumns: "repeat(auto-fit, minmax(255px, 1fr))",
                     gridGap: '20px'
                 }}>
                     {rssFeeds.map((url, index) => (
-
                         <>
-                            {/*<Button*/}
-                            {/*    key={index}*/}
-                            {/*    style={{*/}
-                            {/*        margin: '10px 0',*/}
-                            {/*        backgroundColor: "#45c3e6",*/}
-                            {/*        color: "#3e3e3e",*/}
-                            {/*        borderColor: "#45c3e6",*/}
-                            {/*        overflow: "hidden",*/}
-                            {/*        textOverflow: "ellipsis",*/}
-                            {/*        whiteSpace: "nowrap"*/}
-                            {/*    }}*/}
-                            {/*    onClick={(() => {*/}
-                            {/*        // console.log("URL URL URL: ", url);*/}
-                            {/*        // setIsViewingFeed(true);*/}
-                            {/*        // setViewingUrl(url);*/}
-                            {/*    })}*/}
-                            {/*>*/}
-                            {/*    {url}*/}
-                            {/*</Button>*/}
-                            <DropdownButton
-                                key={index}
-                                id="dropdown-basic-button"
-                                title={
-                                    <div style={{
-                                        maxWidth: '250px',
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                        whiteSpace: 'nowrap'
-                                    }}>
-                                        {url}
-                                    </div>
-                                }
-                            >
+                            <div className={"grid-cell"}>
+                                <DropdownButton
+                                    key={index}
+                                    id="dropdown-basic-button"
+                                    title={
+                                        <div style={{
+                                            maxWidth: '250px',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap'
+                                        }}>
+                                            {url}
+                                        </div>
+                                    }
+                                    style={{margin: "auto", width: "100%", display: "block", minWidth: "275px"}}
+                                >
                                 <Dropdown.Item
                                     onClick={() => {
                                         console.log("url url: ", url);
@@ -153,7 +135,7 @@ const Home: React.FC = () => {
                                     Delete
                                 </Dropdown.Item>
                             </DropdownButton>
-
+                            </div>
                         </>
                     ))}
                 </div>
