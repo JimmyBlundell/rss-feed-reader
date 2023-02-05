@@ -18,7 +18,7 @@ It's a good idea to get the db set up first.
 * Make sure yarn is installed on your machine.
 * Make sure SQL 
 * Navigate to rss-feed-reader/frontend/rss-feed
-  * For an all-in-one installation, run ``` npm run intialize ```
+  * For an all-in-one installation, run ``` npm run initialize ```
 * Otherwise, ``` npm install ``` in this folder
 * ``` cd ../../backend && yarn ```
 
