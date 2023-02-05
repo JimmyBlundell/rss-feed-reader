@@ -26,6 +26,7 @@ It's a good idea to get the db set up first.
 
 ### Executing program
 
+* Go to https://cors-anywhere.herokuapp.com/corsdemo and click 'Request temporary access to the demo server".
 * Ensure ports 8000 and 3000 are available on your machine (8000 will be backend, 3000 will be frontend)
 * ``` npm start ```
   * This uses the concurrently package, so both the express server and react app will be started.
