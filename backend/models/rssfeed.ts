@@ -8,6 +8,9 @@ export class Rssfeed {
     @Column()
     url: string;
 
+    @Column()
+    name: string;
+
     @ManyToOne(() => User, user => user.rssFeeds)
     user: number;
 }

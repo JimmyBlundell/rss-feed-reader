@@ -14,7 +14,7 @@ const typeorm_1 = require("typeorm");
 const rssfeed_1 = require("../models/rssfeed");
 function addRssFeed(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { user, url } = req.body;
+        const { user, name, url } = req.body;
         console.log("addRssFeed hit with: ", { user, url });
         if (!user || !url) {
             res.status(400).send('Missing user info and/or url');
@@ -25,7 +25,7 @@ function addRssFeed(req, res) {
             if (existingRssFeed) {
                 return res.status(409).send("RSS Feed is already saved.");
             }
-            const newRssFeed = rssFeedRepository.create({ user, url });
+            const newRssFeed = rssFeedRepository.create({ user, name, url });
             console.log("------newRssFeed-------", newRssFeed);
             yield rssFeedRepository.save(newRssFeed);
             res.status(200).json({

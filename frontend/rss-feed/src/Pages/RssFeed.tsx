@@ -13,7 +13,7 @@ const goToLink = (url: string) => {
 const RssFeed = ({url}: RssFeedProps) => {
 
     // will run into cors errors if this is not prepended on the rss feed url
-    // TODO: find better way to proxy
+    // TODO: find better way to proxy avoid cors?
     const proxy = "https://cors-anywhere.herokuapp.com/";
 
     // state to keep track of how we sort the feeds

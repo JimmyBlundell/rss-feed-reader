@@ -1,9 +1,8 @@
-import { getRepository, getConnection } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { Rssfeed } from '../models/rssfeed';
-import rssfeed from "../routes/rssfeed";
 
 export async function addRssFeed(req: any, res: any) {
-    const {user, url} = req.body;
+    const {user, name, url} = req.body;
     console.log("addRssFeed hit with: ", {user, url});
     if (!user || ! url) {
         res.status(400).send('Missing user info and/or url');
@@ -15,7 +14,7 @@ export async function addRssFeed(req: any, res: any) {
         if (existingRssFeed) {
             return res.status(409).send("RSS Feed is already saved.");
         }
-        const newRssFeed = rssFeedRepository.create({user, url});
+        const newRssFeed = rssFeedRepository.create({user, name, url});
         console.log("------newRssFeed-------", newRssFeed);
         await rssFeedRepository.save(newRssFeed);
         res.status(200).json({
